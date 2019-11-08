@@ -5,5 +5,6 @@
 # include <string.h>
 
 size_t  ft_strlen(const char *s);
+char    *ft_strdup(const char *str);
 
 #endif
