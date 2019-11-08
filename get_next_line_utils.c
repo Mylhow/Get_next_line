@@ -28,3 +28,18 @@ char    *ft_strdup(const char *str)
     ptr[i] = '\0';
     return (ptr);
 }
+
+void    *ft_calloc(size_t count, size_t size)
+{
+    char    *m;
+    int     i;
+    int     totalSize;
+
+    totalSize = count * size;
+    if (!(m = malloc(totalSize)))
+        return (NULL);
+    i = -1;
+    while (++i < totalSize)
+        m[i] = '\0';
+    return (m);    
+}

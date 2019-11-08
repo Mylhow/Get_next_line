@@ -6,5 +6,6 @@
 
 size_t  ft_strlen(const char *s);
 char    *ft_strdup(const char *str);
+void    *ft_calloc(size_t count, size_t size);
 
 #endif
