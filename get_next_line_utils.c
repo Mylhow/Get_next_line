@@ -5,11 +5,8 @@ size_t  ft_strlen(const char *s)
     size_t i;
 
     i = 0;
-    if (s)
-    {
-        while (s[i])
-            i++;
-    }
+    while (s[i])
+        i++;
     return (i);
 }
 
@@ -42,4 +39,22 @@ void    *ft_calloc(size_t count, size_t size)
     while (++i < totalSize)
         m[i] = '\0';
     return (m);    
+}
+
+char    *ft_substr(char const *s, unsigned int start, size_t len)
+{
+        char    *substr;
+        size_t  i;
+        size_t  maxsize;
+
+        i = -1;
+        if (s == 0)
+            return (NULL);
+        maxsize = (start >= ft_strlen(s)) ? 0 : len;
+        if (!(substr = malloc((maxsize + 1) * sizeof(char))))
+            return (NULL);
+        while (++i < maxsize)
+            substr[i] = s[start + i];
+        substr[i] = '\0';
+        return (substr);
 }
