@@ -58,3 +58,22 @@ char    *ft_substr(char const *s, unsigned int start, size_t len)
         substr[i] = '\0';
         return (substr);
 }
+
+char    *ft_strjoin(char const *s1, char const *s2)
+{
+        char    *ptr;
+        size_t  maxsize;
+        size_t  sizes1;
+
+        if (s1 == 0 && s2 != 0)
+                return ((char *)s2);
+        if (s2 == 0 && s1 != 0)
+                return ((char *)s1);
+        sizes1 = ft_strlen(s1);
+        maxsize = sizes1 + ft_strlen(s2) + 1;
+        if ((s1 == 0 && s2 == 0) || !(ptr = malloc(maxsize * sizeof(char))))
+                return (NULL);
+        ft_memcpy(ptr, s1, sizes1 + 1);
+        ft_strlcat(ptr, s2, maxsize);
+        return (ptr);
+}
