@@ -6,7 +6,7 @@
 /*   By: dgascon <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/12 15:56:28 by dgascon      #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/12 15:59:42 by dgascon     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/13 07:21:14 by dgascon     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -81,4 +81,19 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		ptr[i + sizes1] = s2[i];
 	ptr[sizes2 + sizes1] = '\0';
 	return (ptr);
+}
+
+int	ft_strchr(const char *str, int charset)
+{
+	int i;
+
+	i = -1;
+	if (!str)
+		return (0);
+	while (str[++i])
+	{
+		if (str[i] == charset)
+			return (i + 1);
+	}
+	return (0);
 }

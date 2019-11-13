@@ -6,7 +6,7 @@
 /*   By: dgascon <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/12 15:56:17 by dgascon      #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/12 15:57:38 by dgascon     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/13 07:21:51 by dgascon     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -23,5 +23,6 @@ size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *str);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
+int		ft_strchr(const char *str, int charset);
 int		get_next_line(int fd, char **line);
 #endif

@@ -6,7 +6,7 @@
 /*   By: dgascon <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/12 15:28:45 by dgascon      #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/12 15:41:49 by dgascon     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/13 07:21:17 by dgascon     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -16,27 +16,6 @@
 #define ERROR -1
 #define SUCCESS 1
 #define ENDFILE 0
-
-int	ft_strchr(const char *str, int charset)
-{
-	int i;
-
-	i = -1;
-	if (!str)
-		return (0);
-	while (str[++i])
-	{
-		if (str[i] == charset)
-			return (i + 1);
-	}
-	return (0);
-}
-
-int	ft_free(void *ptr, int code)
-{
-	free(ptr);
-	return (code);
-}
 
 int	gnl_check(int fd, char **buffer)
 {
@@ -49,12 +28,18 @@ int	gnl_check(int fd, char **buffer)
 	if (!(str = malloc((BUFFER_SIZE + 1) * sizeof(char))))
 		return (ERROR);
 	if ((read_size = read(fd, str, BUFFER_SIZE)) == -1)
-		return (ft_free(str, ERROR));
+	{
+		free(str);
+		return (ERROR);
+	}
 	str[read_size] = '\0';
 	(!ft_strlen(str)) ? state = 0 : 0;
 	buffer_save = *buffer;
 	if (!(*buffer = ft_strjoin(*buffer, str)))
-		return (ft_free(str, ERROR));
+	{
+		free(str);
+		return (ERROR);
+	}
 	free(buffer_save);
 	free(str);
 	return (state);
@@ -62,15 +47,15 @@ int	gnl_check(int fd, char **buffer)
 
 int	get_next_line(int fd, char **line)
 {
-	static char *buffer = NULL;
+	static char *buffer[255];
 	char		*new_buffer;
 	int			index_charset;
 	int			state_gnlcheck;
 
-	(!buffer) ? buffer = ft_strdup("") : 0;
-	while (!(index_charset = ft_strchr(buffer, '\n')))
+	(!buffer[fd]) ? buffer[fd] = ft_strdup("") : 0;
+	while (!(index_charset = ft_strchr(buffer[fd], '\n')))
 	{
-		state_gnlcheck = gnl_check(fd, &buffer);
+		state_gnlcheck = gnl_check(fd, &buffer[fd]);
 		if (state_gnlcheck == -1)
 			return (-1);
 		else if (state_gnlcheck == 0)
@@ -79,12 +64,12 @@ int	get_next_line(int fd, char **line)
 	new_buffer = NULL;
 	if (index_charset != 0)
 	{
-		*line = ft_substr(buffer, 0, index_charset - 1);
-		new_buffer = ft_substr(buffer, index_charset, ft_strlen(buffer));
+		*line = ft_substr(buffer[fd], 0, index_charset - 1);
+		new_buffer = ft_substr(buffer[fd], index_charset, ft_strlen(buffer[fd]));
 	}
 	else
-		*line = ft_strdup(buffer);
-	free(buffer);
-	buffer = new_buffer;
+		*line = ft_strdup(buffer[fd]);
+	free(buffer[fd]);
+	buffer[fd] = new_buffer;
 	return (index_charset == 0) ? ENDFILE : SUCCESS;
 }
