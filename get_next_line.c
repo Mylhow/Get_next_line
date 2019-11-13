@@ -6,7 +6,7 @@
 /*   By: dgascon <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/12 15:28:45 by dgascon      #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/13 10:56:43 by dgascon     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/13 11:23:33 by dgascon     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -63,13 +63,12 @@ int	get_next_line(int fd, char **line)
 			break ;
 	}
 	new_buffer = NULL;
-	*line = ft_strdup(buffer[fd]);
-	if (i_charset != 0)
-	{
-		*line = ft_substr(buffer[fd], 0, i_charset - 1);
+	(i_charset != 0) ? *line = ft_substr(buffer[fd], 0, i_charset - 1) : 0;
+	if (i_charset)
 		new_buffer = ft_substr(buffer[fd], i_charset, ft_strlen(buffer[fd]));
-	}
+	else
+		*line = ft_strdup(buffer[fd]);
 	free(buffer[fd]);
-	buffer[fd] = new_buffer;
+	buffer[fd] = (!new_buffer) ? NULL : new_buffer;
 	return (i_charset == 0) ? ENDFILE : SUCCESS;
 }
