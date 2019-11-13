@@ -6,7 +6,7 @@
 /*   By: dgascon <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/12 15:28:45 by dgascon      #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/13 11:23:33 by dgascon     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/13 13:04:32 by dgascon     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -47,12 +47,12 @@ int	gnl_check(int fd, char **buffer)
 
 int	get_next_line(int fd, char **line)
 {
-	static char *buffer[255];
+	static char *buffer[4500];
 	char		*new_buffer;
 	int			i_charset;
 	int			state_gnlcheck;
 
-	if (fd < 0)
+	if (fd < 0 || fd > 4500)
 		return (-1);
 	(!buffer[fd]) ? buffer[fd] = ft_strdup("") : 0;
 	while (!(i_charset = ft_strchr(buffer[fd], '\n')))
