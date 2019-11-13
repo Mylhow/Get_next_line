@@ -6,7 +6,7 @@
 /*   By: dgascon <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/12 15:56:28 by dgascon      #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/13 07:21:14 by dgascon     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/13 10:40:29 by dgascon     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -83,7 +83,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (ptr);
 }
 
-int	ft_strchr(const char *str, int charset)
+int		ft_strchr(const char *str, int charset)
 {
 	int i;
 
