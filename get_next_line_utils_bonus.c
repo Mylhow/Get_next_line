@@ -6,7 +6,7 @@
 /*   By: dgascon <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/12 15:56:28 by dgascon      #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/13 11:25:40 by dgascon     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/18 12:02:50 by dgascon     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -21,22 +21,6 @@ size_t	ft_strlen(const char *s)
 	while (s[i])
 		i++;
 	return (i);
-}
-
-char	*ft_strdup(const char *str)
-{
-	char	*ptr;
-	int		str_size;
-	int		i;
-
-	str_size = ft_strlen(str);
-	if (!(ptr = malloc((str_size + 1) * sizeof(char))))
-		return (NULL);
-	i = -1;
-	while (++i < str_size)
-		ptr[i] = str[i];
-	ptr[i] = '\0';
-	return (ptr);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
@@ -65,9 +49,9 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	i;
 
 	if (s1 == 0 && s2 != 0)
-		return (ft_strdup(s2));
+		return (ft_substr(s2, 0, ft_strlen(s2)));
 	if (s2 == 0 && s1 != 0)
-		return (ft_strdup(s1));
+		return (ft_substr(s1, 0, ft_strlen(s1)));
 	sizes1 = ft_strlen(s1);
 	sizes2 = ft_strlen(s2);
 	if ((s1 == 0 && s2 == 0) ||
@@ -95,5 +79,16 @@ int		ft_strchr(const char *str, int charset)
 		if (str[i] == charset)
 			return (i + 1);
 	}
+	return (0);
+}
+
+int		gnl_line(char *buffer, char **line, int index)
+{
+	if (index > 0)
+		(*line) = ft_substr(buffer, 0, index - 1);
+	else
+		(*line) = ft_substr(buffer, 0, ft_strlen(buffer));
+	if (!(*line))
+		return (ERROR);
 	return (0);
 }

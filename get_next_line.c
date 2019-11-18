@@ -6,18 +6,49 @@
 /*   By: dgascon <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/12 15:28:45 by dgascon      #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/13 13:04:32 by dgascon     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/18 14:57:07 by dgascon     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-#define ERROR -1
-#define SUCCESS 1
-#define ENDFILE 0
+t_lst	*gnl_new(int fd, char *buffer)
+{
+	t_lst *current;
 
-int	gnl_check(int fd, char **buffer)
+	if (!(current = malloc(sizeof(t_lst))))
+		return (NULL);
+	if (!buffer)
+	{
+		if (!(current->buffer = ft_substr("", 0, 1)))
+			return (NULL);
+	}
+	else
+		current->buffer = buffer;
+	current->fd = fd;
+	current->next = NULL;
+	return (current);
+}
+
+t_lst	*gnl_fct(t_lst **lsts, int fd, char *buffer)
+{
+	t_lst *current;
+
+	if (!(current = (*lsts)))
+		return (((*lsts) = gnl_new(fd, buffer)));
+	while (current)
+	{
+		if (current->fd == fd)
+			break ;
+		else if (!(current->next))
+			return ((current->next = gnl_new(fd, buffer)));
+		(current) = (current)->next;
+	}
+	return (current);
+}
+
+int		gnl_check(int fd, char **buffer)
 {
 	char	*str;
 	int		read_size;
@@ -45,30 +76,29 @@ int	gnl_check(int fd, char **buffer)
 	return (state);
 }
 
-int	get_next_line(int fd, char **line)
+int		get_next_line(int fd, char **line)
 {
-	static char *buffer[4500];
-	char		*new_buffer;
-	int			i_charset;
-	int			state_gnlcheck;
+	static t_lst	*buffer;
+	t_lst			*current;
+	char			*new_buffer;
+	int				i;
+	int				state_gnlcheck;
 
-	if (fd < 0 || fd > 4500)
-		return (-1);
-	(!buffer[fd]) ? buffer[fd] = ft_strdup("") : 0;
-	while (!(i_charset = ft_strchr(buffer[fd], '\n')))
-	{
-		if ((state_gnlcheck = gnl_check(fd, &buffer[fd])) == -1)
-			return (-1);
+	new_buffer = NULL;
+	if (fd < 0 || !(current = gnl_fct(&buffer, fd, NULL)))
+		return (ERROR);
+	while (!(i = ft_strchr(current->buffer, '\n')))
+		if ((state_gnlcheck = gnl_check(fd, &current->buffer)) == -1)
+			return (ERROR);
 		else if (state_gnlcheck == 0)
 			break ;
-	}
-	new_buffer = NULL;
-	(i_charset != 0) ? *line = ft_substr(buffer[fd], 0, i_charset - 1) : 0;
-	if (i_charset)
-		new_buffer = ft_substr(buffer[fd], i_charset, ft_strlen(buffer[fd]));
-	else
-		*line = ft_strdup(buffer[fd]);
-	free(buffer[fd]);
-	buffer[fd] = (!new_buffer) ? NULL : new_buffer;
-	return (i_charset == 0) ? ENDFILE : SUCCESS;
+	if ((i > 0) &&
+		!(new_buffer =
+			ft_substr(current->buffer, i, ft_strlen(current->buffer))))
+		return (ERROR);
+	if (gnl_line(current->buffer, line, i) == -1)
+		return (ERROR);
+	free(current->buffer);
+	current->buffer = (!new_buffer) ? NULL : new_buffer;
+	return (i == 0) ? ENDFILE : SUCCESS;
 }
