@@ -6,12 +6,16 @@
 /*   By: dgascon <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/12 15:28:45 by dgascon      #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/18 12:02:52 by dgascon     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/18 15:49:48 by dgascon     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
+
+#ifndef BUFFER_SIZE_H
+# define BUFFER_SIZE 1
+#endif
 
 t_lst	*gnl_new(int fd, char *buffer)
 {
@@ -46,33 +50,6 @@ t_lst	*gnl_fct(t_lst **lsts, int fd, char *buffer)
 		(current) = (current)->next;
 	}
 	return (current);
-}
-
-int		gnl_free(t_lst **lsts, int fd)
-{
-	t_lst	*current;
-	t_lst	*next;
-	t_lst	*prev;
-
-	prev = NULL;
-	if ((current = (*lsts)))
-	{
-		while (current)
-		{
-			if (current->fd == fd)
-			{
-				free(current->buffer);
-				if (prev)
-					prev->next = next;
-				free(current);
-				return (-1);
-			}
-			prev = current;
-			current = current->next;
-			next = current->next;
-		}
-	}
-	return (-1);
 }
 
 int		gnl_check(int fd, char **buffer)
@@ -112,7 +89,7 @@ int		get_next_line(int fd, char **line)
 	int				state_gnlcheck;
 
 	new_buffer = NULL;
-	if (fd < 0 || !(current = gnl_fct(&buffer, fd, NULL)))
+	if (fd < 0 || BUFFER_SIZE <= 0 || !(current = gnl_fct(&buffer, fd, NULL)))
 		return (ERROR);
 	while (!(i = ft_strchr(current->buffer, '\n')))
 		if ((state_gnlcheck = gnl_check(fd, &current->buffer)) == -1)
@@ -122,7 +99,7 @@ int		get_next_line(int fd, char **line)
 	if ((i > 0) &&
 		!(new_buffer =
 			ft_substr(current->buffer, i, ft_strlen(current->buffer))))
-		return (gnl_free(&buffer, fd));
+		return (ERROR);
 	if (gnl_line(current->buffer, line, i) == -1)
 		return (ERROR);
 	free(current->buffer);
