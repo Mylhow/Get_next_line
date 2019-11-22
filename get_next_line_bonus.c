@@ -6,14 +6,14 @@
 /*   By: dgascon <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/12 15:28:45 by dgascon      #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/18 15:49:48 by dgascon     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/22 13:59:01 by dgascon     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-#ifndef BUFFER_SIZE_H
+#ifndef BUFFER_SIZE
 # define BUFFER_SIZE 1
 #endif
 
